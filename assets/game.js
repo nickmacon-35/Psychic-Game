@@ -21,7 +21,7 @@ document.onkeydown = function(event) {
     addLetter(keyPress);
 }
 
-//function to catch repeat letters and/or add players guess to userGuess string
+//function to catch repeat letters and alert user accordingly
 function addLetter (userKeyPress) {
 
 
@@ -29,30 +29,27 @@ function addLetter (userKeyPress) {
         return item === userKeyPress;
     })
 
-    //alert player if the above code is true.
     if (repeatGuess) {
         alert(userKeyPress + " already guessed. Try again!");
-
-        //if it is not a repeat guess, check if it's in word
     } 
     else {
         userGuess.push(userKeyPress);
         console.log(userGuess);
 
-        //show user's input in browser
+        //show user's input on page
         showUserGuess();
         //is user's input a match to computer guess
         guessMatch(userKeyPress);
     }
-
 }
 
-//function to show letters guessed in browser
+//Show letters guessed on page
 function showUserGuess() {
     var tempStr = userGuess.join(", ");
     document.getElementById("playersGuess").innerHTML = tempStr;
 }
 
+//Conditions for whether you win or lose are written here
 function guessMatch (character) {
 
     console.log(character);
@@ -61,15 +58,15 @@ function guessMatch (character) {
     if (character === computerGuess) {
 
         alert("You win!");
-        wins = wins + 1;
+        wins++;
         showWins();
-        //toggleGame();
+        resetVariables();
 
     } else if (guessLeft === 0) {
         alert("YOU LOSE! GOOD DAY SIR! (...or try again)");
-        losses = losses + 1
+        losses++;
         showLosses();
-        resetVariables ();
+        resetVariables();
 
     } else {
         guessLeft = guessLeft - 1;
@@ -77,33 +74,27 @@ function guessMatch (character) {
     }
 }
 
-//function to show wins
+//Show total wins on page
 function showWins() {
     document.getElementById("numWins").innerHTML = wins;
 }
 
-//function to show losses
+//Show total losses on page
 function showLosses() {
     document.getElementById("numLosses").innerHTML = losses;
 }
 
-//function to show guesses remaining
+//Show guesses remaining on page
 function showGuessesRemaining() {
     document.getElementById("numGuesses").innerHTML = guessLeft + 1;
 }
 
-
+//Reset variables for next game
 function resetVariables () {
     userGuess = [];
     guessLeft = 10;
+    computerGuess = String.fromCharCode(
+        Math.round(Math.random() * 26) + 97
+    );
+    console.log(computerGuess);
 }
-
-function startGame() {
-    showGuessesRemaining();
-    showWins();
-    showLosses();
-}
-
-
-
-startGame();
